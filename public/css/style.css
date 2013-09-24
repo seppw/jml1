@@ -1,0 +1,67 @@
+.footer { 
+    bottom          : 0px; 
+    position        : fixed; 
+    font-size       : 0.75em; 
+    padding-bottom  : 0px; 
+    padding-top     : 0px; 
+    border-top      : 1px solid #ccc; 
+    width           : 100%; 
+    text-indent     : 0.5em; 
+    }
+
+.content { padding  : 52px 30px 30px;  }
+
+.message { 
+    height          : 1em;
+    min-height      : 1em; 
+    text-indent     : 0.5em;
+    padding-bottom  : 0.4em;
+    margin          : 0; 
+    vertical-align  : top  ; 
+    }
+
+.alert-warn {
+  color: #c09853;;
+  background-color: #fcf8e3;
+  border-color: #fbeed5;;
+}
+
+.alert-warn h4 {
+  color: #c09853;
+}
+ 
+.message-warn {
+  color: #c09853;
+}
+
+.message-error {
+  color: #c09853;
+}
+
+
+.alert-none {
+  color: #000;
+  background-color: #fff;
+  border-color: #fff;
+}
+
+.alert-none h4 {
+  color: #000;
+}
+
+input.ng-invalid { -moz-box-shadow: 0 0 1em gold; background-color: #fee;}      
+input.ng-invalid-required { background-color: #ff8;}    
+input:focus.ng-invalid-required { -moz-box-shadow: 0 0 1em gold; }
+
+input.ng-invalid-email, 
+input.ng-invalid-phone, 
+input.ng-invalid-number, 
+input.ng-invalid-date {
+    color : blue ;
+    -moz-text-decoration-line: underline;
+    -moz-text-decoration-style: wavy;
+    -moz-text-decoration-color: red; 
+    -moz-box-shadow: 0 0 1em red;
+}
+
+

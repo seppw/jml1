@@ -1,0 +1,112 @@
+.row
+    .span6
+        legend Studienzweige
+            button.btn-small.pull-right(ng-click="proxy.master.refresh()", title="refresh") 
+                i.icon-refresh
+            button.btn-small.pull-right(ng-click="form.open('insert',{})",
+                title="neuen Datensatz erfassen") 
+                i.icon-plus
+
+        table.table.table-condensed.table-hover
+            tr(ng-repeat="data in proxy.master.data", ng-click="proxy.detail.query(data.id)")
+                td(style="text-align : center;") {{ data.id }}
+                td(style="text-align : left;") {{ data.kurzname }}
+                td(style="text-align : left;") {{ data.name }}
+                 
+    .span6
+        legend Studienzweig
+            button.btn-small.pull-right(ng-click="proxy.detail.refresh()", title="refresh") 
+                i.icon-refresh
+
+            button.btn-small.pull-right(ng-click="proxy.remove.query(detail.data.id)", 
+                title="Datensatz löschen") 
+                i.icon-minus
+
+            button.btn-small.pull-right(ng-click="form.open('update',proxy.detail.data.id)",
+                
+                title="Datensatz bearbeiten") 
+                i.icon-edit
+
+        alert(ng-repeat="alert in proxy.detail.message", 
+            type="alert.type", 
+            close="detail.clearMessage()") {{ alert.text }} 
+
+
+
+
+        .well(ng-hide="proxy.detail.isEmpty()")
+            tt [{{ proxy.detail.data.id }}]
+            h4 {{ proxy.detail.data.name }}
+            p {{ proxy.detail.data.label }}
+            p {{ proxy.detail.data.kurzname }}
+            table.table.table-condensed.table-hover
+                tr
+                    th ID
+                    th Abschnitt
+                    th Dauer
+                    th
+                    th 
+                        i.icon-plus(ng-click="abschnitt_form.open(true,{zweig_id : detail.data.id})")
+                tr(ng-repeat="a in proxy.detail.data.abschnitt")
+                    td(style="text-align : left;") {{ a.id }}
+                    td(style="text-align : left;") {{ a.index }}
+                    td(style="text-align : left;") {{ a.dauer }} 
+                    td 
+                        i.icon-edit(ng-click="abschnitt_form.open(false,a)")
+                    td 
+                        i.icon-minus(ng-click="remove_abschnitt.query(a.id)")
+
+
+div(modal="form.isOpen", 
+    close="form.close()")
+
+    .modal-header
+        h3 Studienzweig
+
+    .modal-body
+
+        .message {{ message }}
+
+        form(name="studienzweig") 
+
+            label Name,
+            input(type="text", 
+            ng-model="form.data.name", 
+            required,
+            error="message",
+            ng-label="Name")
+
+            label Kurzname
+            input(type="text", 
+            ng-model="form.data.kurzname",
+            required,
+            error="message",
+            ng-label="Kurzname")
+
+    .modal-footer
+        button.btn.btn-primary(ng-click="form.save()") Speichern
+        button.btn.btn-warning(ng-click="form.close()") Abbrechen
+
+div(modal="abschnitt_form.isOpen", 
+    close="abschnitt_form.close()")
+
+    .modal-header
+        h3 Studienzweig/Abschnitt
+
+    .modal-body
+
+        .message {{ abschnitt_message }}
+
+        form(name="abschnitt") 
+
+            label Dauer,
+            input(type="number", 
+            ng-model="abschnitt_form.data.dauer", 
+            required,
+            error="abschnitt_message",
+            ng-label="Dauer")
+
+    .modal-footer
+        button.btn.btn-primary(ng-click="abschnitt_form.save()") Speichern
+        button.btn.btn-warning(ng-click="abschnitt_form.close()") Abbrechen
+

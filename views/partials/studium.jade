@@ -1,0 +1,67 @@
+.row
+    .span6
+        legend Studium
+            button.btn-small.pull-right(ng-click="form.open()") 
+                i.icon-edit
+            button.btn-small.pull-right(ng-click="master.refresh()") 
+                i.icon-refresh 
+
+        alert(ng-repeat="alert in main.message", 
+            type="alert.type", 
+            close="main.message = []") {{ alert.text }} 
+
+        select.input-block-level(ng-model="king.zweig",
+            ng-options="k.name for k in king.data") 
+
+        table.table.table-condensed.table-hover
+            tr(ng-repeat="m in master.data", ng-click="detail.query(m.id)" )
+                td(style="text-align : left;") {{ m.id }}
+                td(style="text-align : left;") {{ m.hauptfach_kurzname }}
+                td(style="text-align : left;") {{ m.hauptfach }} 
+
+    .span6
+
+        legend Studium
+            button.btn-small.pull-right(ng-click="doRemove(detail.data.id)",
+                ng-disabled="detail.isEmpty()") 
+                i.icon-minus
+            button.btn-small.pull-right(ng-click="detail.refresh()",ng-disabled="detail.isEmpty()") 
+                i.icon-refresh 
+        
+        alert(ng-repeat="alert in detail.message", 
+            type="alert.type", 
+            close="detail.message = []") {{ alert.text }} 
+
+        .well(ng-hide="detail.isEmpty()")
+            h5 {{ detail.data.zweig }}
+            p {{ detail.data.hauptfach }}
+            table.table.table-condensed.table-hover
+                tr
+                    th ID
+                    th Abschnitt
+                    th Dauer
+                tr(ng-repeat="a in detail.data.abschnitt")
+                    td(style="text-align : left;") {{ a.id }}
+                    td(style="text-align : left;") {{ a.index }}
+                    td(style="text-align : left;") {{ a.dauer }} 
+
+div(modal="form.isOpen", 
+    close="form.close()")
+
+    .modal-header
+        h3 Studium/Hauptfächer
+
+    .modal-body
+
+        table.table.table-condensed.table-hover
+            tr(ng-repeat="d in form.data")
+                td 
+                    input(type="checkbox", ng-model="d.selected")
+                td(style="text-align : left;") {{ d.hauptfach_kurzname + "/" + d.hauptfach  }}
+                
+
+    .modal-footer
+        button.btn(ng-click="form.selectAll()") Alle auswählen
+        button.btn(ng-click="form.invertAll()") Invertieren
+        button.btn.btn-primary(ng-click="form.save()") Speichern
+        button.btn.btn-warning(ng-click="form.close()") Abbrechen

@@ -1,0 +1,81 @@
+.row
+    .span6 
+        legend Hauptfächer
+            button.btn-small.pull-right(ng-click="proxy.master.query()", title="refresh") 
+                i.icon-refresh
+            button.btn-small.pull-right(ng-click="form.open('insert')", title="neuen Datensatz erfassen") 
+                i.icon-plus
+
+        table.table.table-condensed.table-hover
+            tr(ng-repeat="hf in proxy.master.data", ng-click="proxy.detail.query(hf.id)")
+                td(style="text-align : center;") {{ hf.id }}
+                td(style="text-align : left;") {{ hf.kurzname }}
+                td(style="text-align : left;") {{ hf.name }}
+                 
+    .span6
+        legend Hauptfach
+            button.btn-small.pull-right(ng-click="proxy.detail.refresh()", title="refresh") 
+                i.icon-refresh
+
+            button.btn-small.pull-right(ng-click="proxy.remove.query(proxy.detail.data.id)", 
+                ng-disabled="proxy.detail.isEmpty()",
+                title="Datensatz löschen") 
+                i.icon-minus
+
+            button.btn-small.pull-right(ng-click="form.open('update',proxy.detail.data.id)",
+                ng-disabled="detail.isEmpty()",
+                title="Datensatz bearbeiten") 
+                i.icon-edit
+
+        alert(ng-repeat="alert in proxy.detailMessage.alert", 
+            type="alert.type", 
+            close="proxy.detailMessage.close()") {{alert.text}} 
+
+        .well(ng-hide="proxy.detail.isEmpty()")
+            tt [{{ proxy.detail.data.id }}]
+            h4 {{ proxy.detail.data.name }}
+            p {{ proxy.detail.data.label }}
+            p {{ proxy.detail.data.kurzname }}
+
+// Formular
+
+div(modal="form.isOpen", 
+    close="form.close()")
+
+    .modal-header
+        h3 Hauptfach
+            small.pull-right(error-count="hfForm") 
+ 
+    .modal-body(style="padding-top : 0;" )
+        
+        .message(class="text-{{ form.message.state }}") {{ message }}
+
+        form(name="hfForm", id="hfForm")
+
+            label Id
+            input(type="text", ng-model="form.data.id",disabled)
+
+            label Name
+            input(type="text",
+                
+                ng-model="form.data.name", 
+                required="true", 
+                ng-label="Name",
+                error="message")
+
+            label Kurzname
+            input(type="text", 
+                ng-model="form.data.kurzname", 
+                required, 
+                ng-label="Kurzname", 
+                error="message")
+
+            label Label
+            input(type="text", 
+                ng-model="form.data.label", 
+                label="Label")
+
+    .modal-footer
+        button.btn(ng-click="checkForm()") OK ?
+        button.btn.btn-primary(ng-click="form.save()") Speichern
+        button.btn.btn-warning(ng-click="form.close()") Abbrechen

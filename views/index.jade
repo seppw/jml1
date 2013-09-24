@@ -1,0 +1,67 @@
+!!! 5
+html(ng-app="Client")
+    head
+        title= title
+
+        link(rel="stylesheet", href="lib/bootstrap/css/bootstrap.css")
+        link(rel="stylesheet", href="css/style.css")
+        
+        script(src="lib/jquery/jquery.min.js")
+        script(src="http://code.jquery.com/ui/1.10.3/jquery-ui.js")
+        script(src="lib/bootstrap/js/bootstrap.js")
+        script(src="lib/angular/angular.js")
+        script(src="lib/lodash/lodash.js")
+        script(src="lib/bootstrap/js/bootstrap-ui.js")
+        script(src="/socket.io/socket.io.js")
+
+        script(src="services/client.js")
+        script(src="services/error.js")
+        //script(src="services/db.js")
+        //script(src="services/util-old.js")
+        script(src="services/util.js")        
+        //script(src="services/forms.js")
+
+        script(src="controllers/ProtokollCtrl.js")
+        script(src="domain/hauptfach.js")
+        script(src="domain/studienzweig.js")
+        script(src="domain/student.js")
+        script(src="domain/studium.js")
+        script(src="domain/faecher.js")
+
+    body
+        .navbar.navbar-fixed-top
+            .navbar-inner
+                ul.nav
+                    li: a(href="#") Home
+                    
+                    li.dropdown
+                        a.dropdown-toggle(href="#", data-toggle="dropdown") Kontakt
+                            b.caret
+                        ul.dropdown-menu
+                            li: a(href="#/student") Student 
+                            li: a(href="#") 
+                                i Mitarbeiter
+                            li: a(href="#")
+                                i Lehrer
+   
+                    // drop down menu studium
+                    li.dropdown
+                        a.dropdown-toggle(href="#", data-toggle="dropdown") Studium
+                             b.caret
+                        ul.dropdown-menu
+                            li: a(href="#/studienzweig") Studienzweig 
+                            li: a(href="#/hauptfach") Hauptfächer 
+                            li: a(href="#/fach") Fächer
+                            li.divider
+                            li: a(href="#/studium") Studium 
+                            li: a(href="#")
+                                i Studienpläne
+                            li.divider
+                            li: a(href="#")
+                                i Lehrveranstaltungen 
+                            li: a(href="#")
+                                i Studienkalender 
+                    li: a(href="#/protokoll") Protokoll
+
+        // main content
+        .content(ng-view)

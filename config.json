@@ -1,0 +1,7 @@
+{
+    "name"      : "jml",
+    "author"    : "Sepp Wimmer",
+    "email"     : "seppwimmer@hotmail.com",
+    "version"   : "0.1",
+    "port"      : "8080"
+}

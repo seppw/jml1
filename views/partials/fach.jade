@@ -1,0 +1,94 @@
+.row
+    .span6 
+        legend Fächer
+            button.btn-small.pull-right(ng-click="proxy.master.query()", title="refresh") 
+                i.icon-refresh
+            button.btn-small.pull-right(ng-click="openForm('insert',null)", title="neuen Datensatz erfassen") 
+                i.icon-plus
+
+        table.table.table-condensed.table-hover
+            tr(ng-repeat="hf in proxy.master.data", ng-click="proxy.detail.query(hf.id)")
+                td(style="text-align : center;") {{ hf.id }}
+                td(style="text-align : left;") {{ hf.typ }}
+                td(style="text-align : left;") {{ hf.vo_typ }}
+                td(style="text-align : left;") {{ hf.name }}
+                 
+    .span6
+        legend Fach
+            button.btn-small.pull-right(ng-click="proxy.detail.refresh()", title="refresh") 
+                i.icon-refresh
+
+            button.btn-small.pull-right(ng-click="proxy.remove.query(proxy.detail.data.id)", 
+                ng-disabled="proxy.detail.isEmpty()",
+                title="Datensatz löschen") 
+                i.icon-trash
+
+            button.btn-small.pull-right(ng-click="openForm('update',proxy.detail.data.id)",
+                ng-disabled="proxy.detail.isEmpty()",
+                title="Datensatz bearbeiten") 
+                i.icon-edit
+
+            button.btn-small.pull-right(ng-click="form.open('copy',proxy.detail.data.id)",
+                ng-disabled="proxy.detail.isEmpty()",
+                title="Datensatz kopieren") 
+                i.icon-share
+
+        alert(ng-repeat="alert in proxy.detailMessage.alert", 
+            type="alert.type", 
+            close="proxy.detailMessage.close()") {{alert.text}} 
+
+        .well(ng-hide="proxy.detail.isEmpty()")
+            tt [{{ proxy.detail.data.id }}]
+            h4 {{ proxy.detail.data.name }}
+            p {{ proxy.detail.data.typ }}
+            p {{ proxy.detail.data.vo_typ }}
+
+// Formular
+
+div(modal="form.isOpen", 
+    close="form.close()")
+
+    .modal-header
+        h3 Fach
+            small.pull-right(error-count="hfForm") 
+ 
+    .modal-body(style="padding-top : 0;" )
+        
+        .message(class="text-{{ form.message.state }}") {{ message }}
+
+        form(name="hfForm", id="hfForm")
+
+            label Id
+            input(type="text", ng-model="form.data.id",disabled)
+
+            label Name
+            input(type="text",
+                
+                ng-model="form.data.name", 
+                required="true", 
+                ng-label="Name",
+                error="message")
+
+            label Stunden
+            input(type="text", 
+                ng-model="form.data.stunden", 
+                required, 
+                ng-label="Kurzname", 
+                error="message")
+
+            label Fachtyp
+            select(ng-options="t.name for t in form.data.typen", 
+                ng-model="fachTyp", 
+                sync="{{form.data.typ_id}}",
+                sync-source="{{ form.data.typen }}" 
+                required) 
+                option(value="", ng-show=" fachTyp == null ") -- bitte auswählen --
+
+            label Vorlesungstyp
+            select(ng-options="t.name for t in form.data.voTypen", ng-model="voTyp", required) 
+                option(value="", ng-show=" voTyp == null ") -- bitte auswählen --
+
+
+    .modal-footer
+        button.btn.btn-primary(ng-click="form.save()") Speichern
+        button.btn.btn-warning(ng-click="form.close()") Abbrechen

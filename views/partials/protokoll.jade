@@ -1,0 +1,11 @@
+legend Protokoll
+
+button(ng-click="test()") test
+
+table.table.table-condensed.table-hover
+    tr(ng-repeat="l in log")
+        td {{ l.date }}
+        td {{ l.command }}
+        td {{ l.data }}
+ 
+

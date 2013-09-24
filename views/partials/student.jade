@@ -1,0 +1,91 @@
+.span6
+    legend Suche
+        button.btn-small.pull-right(ng-click="form.open('insert')",title="Neuen Datensatz erfassen") 
+            i.icon-plus
+    .input-append
+        input.span5( type="text", 
+            ng-model="master.param",
+            placeholder="Suchbegriff")
+        button.btn(ng-click="query()") 
+            i.icon-search 
+
+    div(style="height:450px; overflow:auto;")
+        table.table.table-condensed.table-hover
+            tr(ng-repeat="data in proxy.master.data", ng-click="proxy.detail.query(data.id)")
+                td {{ data.matnr }}
+                td {{ data.nachname + ", " + data.vorname }}
+
+.span6 
+    legend Student
+        button.btn-small.pull-right(ng-click="print()",ng-disabled="detail.isEmpty()",
+            title="Inskriptionsbestätigung drucken") 
+            i.icon-print
+
+        button.btn-small.pull-right(ng-click="form.open('update',proxy.detail.data.id)",
+            ng-disabled="detail.isEmpty()",
+            title="Datensatz bearbeiten") 
+            i.icon-edit
+
+        button.btn-small.pull-right(ng-click="proxy.remove.query(proxy.detail.data.id)", 
+            ng-disabled="proxy.detail.isEmpty()",
+            title="Datensatz löschen") 
+            i.icon-minus
+
+    alert(ng-repeat="alert in print.message", 
+        type="alert.type", 
+        close="print.message = []") {{ alert.text }} 
+
+    .well(ng-hide="proxy.detail.isEmpty()")
+        tt(title="Matrikelnummer") [{{ proxy.detail.data.matnr }}]
+        h4((title="Nachname, Vorname")) {{ proxy.detail.data.nachname + ", " + proxy.detail.data.vorname  }}
+        p
+            {{ proxy.detail.data.phone1 }} <br>
+            {{ proxy.detail.data.email }}  <br>
+            {{ proxy.detail.data.gebdat + " " + detail.data.gebort}} <br>
+      
+        table.table.table-condensed
+            tr
+                th Studium
+                th Lehrkraft
+                th Jahr
+                th(title="Studienliste bearbeiten", ng-click="insertStudium()")
+                    i.icon-plus
+                    
+            tr(ng-repeat="st in proxy.detail.data.studiert")
+                td {{ st.studium + "/" + st.fach }}
+                td {{ st.lehrkraft }}
+                td {{ st.jahr }}
+                td(title="Studienliste bearbeiten", ng-click="removeStudium()")
+                    i.icon-minus
+
+// Studenten Formular
+
+div(modal="form.isOpen", 
+    close="form.close()")
+
+    .modal-header
+        h3 Student
+
+    .modal-body
+
+        .message {{ message }}
+
+        form(name="student") 
+
+            label Vorname,
+            input(type="text", 
+            ng-model="form.data.nachname", 
+            required,
+            error="message",
+            ng-label="Nachname")
+
+            label Nachname
+            input(type="text", 
+            ng-model="form.data.vorname",
+            required,
+            error="message",
+            ng-label="Vorname")
+
+    .modal-footer
+        button.btn.btn-primary(ng-click="form.save()") Speichern
+        button.btn.btn-warning(ng-click="form.close()") Abbrechen
